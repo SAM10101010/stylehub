@@ -11,6 +11,7 @@
     <header>
         <div class="logo">StyleHub</div>
         <a href="/" class="back-home">🏠 Back to Home</a>
+        <button id="cart-btn" onclick="viewCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
     </header>
 
     <!-- Categories Section -->
@@ -33,14 +34,15 @@
     <footer>
         <p>&copy; 2025 StyleHub. All rights reserved.</p>
     </footer>
-
     <script>
+        let cart = [];
+    
         // Function to get query parameters
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
-
+    
         // Mapping of category IDs to category names
         const categories = {
             1: "Jeans",
@@ -49,7 +51,7 @@
             4: "Outerwear",
             5: "Accessories"
         };
-
+    
         // Fetch and display products based on category ID
         async function fetchProducts(categoryId) {
             // Update the category title
@@ -60,19 +62,19 @@
                 categoryTitle.innerText = "Please select a category";
                 return;
             }
-
+    
             try {
                 const response = await fetch(`/products?category_id=${categoryId}`);
                 const products = await response.json();
                 const productList = document.getElementById("product-list");
                 productList.innerHTML = "";
-
+    
                 if (products.length === 0) {
                     productList.innerHTML = "<p>No products available for this category.</p>";
                     return;
                 }
-
-                // Display products
+    
+                // Display products with Buy Now and Add to Cart buttons
                 products.forEach(product => {
                     const productCard = document.createElement("div");
                     productCard.classList.add("product-card");
@@ -80,6 +82,8 @@
                         <img src="${product.photo}" alt="${product.name}">
                         <h3>${product.name}</h3>
                         <p>Price: $${product.price}</p>
+                        <button onclick="buyProduct(${product.id})">🛒 Buy Now</button>
+                        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
                     `;
                     productList.appendChild(productCard);
                 });
@@ -87,12 +91,43 @@
                 console.error("Error fetching products:", error);
             }
         }
-
+    
+        // Function to simulate buying a product
+        function buyProduct(productId) {
+            alert(`Product with ID ${productId} has been bought!`);
+        }
+    
+        // Function to add product to cart
+        function addToCart(productId, productName, productPrice) {
+            cart.push({ id: productId, name: productName, price: productPrice });
+            updateCartCount();
+            alert(`${productName} added to cart!`);
+        }
+    
+        // Function to update cart count
+        function updateCartCount() {
+            document.getElementById("cart-count").innerText = cart.length;
+        }
+    
+        // Function to view cart items
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("Your cart is empty.");
+                return;
+            }
+    
+            let cartDetails = "🛒 Your Cart:\n";
+            cart.forEach(item => {
+                cartDetails += `🔸 ${item.name} - $${item.price}\n`;
+            });
+            alert(cartDetails);
+        }
+    
         // Filter products by category
         function filterProducts(categoryId) {
             fetchProducts(categoryId);
         }
-
+    
         // Load products based on query parameter on page load
         document.addEventListener("DOMContentLoaded", () => {
             const categoryId = getQueryParam("category_id");
@@ -102,43 +137,7 @@
                 document.getElementById("category-title").innerText = "Please select a category";
             }
         });
-        // Function to filter products by category
-        // async function filterProducts(categoryId) {
-        //     try {
-        //         const response = await fetch(`/products?category_id=${categoryId}`);
-        //         const products = await response.json();
-        //         const productList = document.getElementById("product-list");
-        //         productList.innerHTML = "";
-
-        //         if (products.length === 0) {
-        //             productList.innerHTML = "<p>No products available for this category.</p>";
-        //             return;
-        //         }
-
-        //         products.forEach(product => {
-        //             const productCard = document.createElement("div");
-        //             productCard.classList.add("product-card");
-        //             productCard.innerHTML = `
-        //                 <img src="${product.photo}" alt="${product.name}">
-        //                 <h3>${product.name}</h3>
-        //                 <p>Price: $${product.price}</p>
-        //             `;
-        //             productList.appendChild(productCard);
-        //         });
-        //     } catch (error) {
-        //         console.error("Error fetching products:", error);
-        //     }
-        // }
-
-        // // Load products based on query parameter on page load
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     const categoryId = new URLSearchParams(window.location.search).get("category_id");
-        //     if (categoryId) {
-        //         filterProducts(categoryId);
-        //     } else {
-        //         document.getElementById("category-title").innerText = "Please select a category.";
-        //     }
-        // });
     </script>
+    
 </body>
 </html>

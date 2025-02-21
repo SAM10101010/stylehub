@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub - Landing Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">StyleHub</div>
+            <ul class="nav-links">
+                <li><a href="https://www.stylehub.com/shop" target="_blank">Shop</a></li>
+                <li><a href="https://www.stylehub.com/lookbook" target="_blank">Lookbook</a></li>
+                <li><a href="https://www.stylehub.com/blog" target="_blank">Blog</a></li>
+                <li><a href="https://www.stylehub.com/about" target="_blank">About</a></li>
+                <li><a href="https://www.stylehub.com/contact" target="_blank">Contact</a></li>
+            </ul>
+            <div class="icons">
+                <a href="https://www.stylehub.com/cart" target="_blank"><span>🛒</span></a>
+                <span class="search-icon" onclick="toggleSearchBar()">🔍</span>
+                <div id="search-bar" class="search-bar">
+                    <input type="text" placeholder="Search here..." />
+                    <button onclick="performSearch()">Search</button>
+                </div>
+            </div>
+            
+            
+            <div class="hamburger">☰</div>
+        </nav>
+        <div id="mobile-menu">
+            <a href="https://www.stylehub.com/shop" >Shop</a>
+            <a href="https://www.stylehub.com/lookbook" >Lookbook</a>
+            <a href="https://www.stylehub.com/blog" >Blog</a>
+            <a href="https://www.stylehub.com/about" >About</a>
+            <a href="https://www.stylehub.com/contact" >Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Discover Latest Trend</h1>
+            <h2>Autumn Collection, 2023</h2>
+            <a href="https://www.stylehub.com/shop" ><button>Shop Now</button></a>
+        </section>
+
+        <section class="features">
+            <div class="feature-item">
+                <span class="icon">🚚</span>
+                <h3>Free Delivery</h3>
+                <p>Enjoy fast and free shipping on all orders.</p>
+            </div>
+        
+            <div class="feature-item">
+                <span class="icon">⭐</span>
+                <h3>24/7 Support</h3>
+                <p>Our team is available anytime to assist you.</p>
+            </div>
+        
+            <div class="feature-item">
+                <span class="icon">🔄</span>
+                <h3>Easy Returns</h3>
+                <p>Hassle-free returns within 30 days of purchase.</p>
+            </div>
+        
+            <div class="feature-item">
+                <span class="icon">🔒</span>
+                <h3>Secure Payment</h3>
+                <p>Safe and encrypted transactions every time.</p>
+            </div>
+        </section>
+        
+
+        <section class="categories">
+            <h2>Categories</h2>
+            <div id="category-list">
+                <a href="https://www.stylehub.com/products/jeans" class="category-item">
+                    <div class="pentagon">
+                        <img src="img/jeans.jpg" alt="Jeans">
+                    </div>
+                    <p>Jeans</p>
+                </a>
+        
+                <a href="https://www.stylehub.com/products/dresses" class="category-item">
+                    <div class="pentagon">
+                        <img src="img/dress.avif" alt="Dresses">
+                    </div>
+                    <p>Dresses</p>
+                </a>
+        
+                <a href="https://www.stylehub.com/products/t-shirts" class="category-item">
+                    <div class="pentagon">
+                        <img src="img/tshirt.webp" alt="T-Shirts">
+                    </div>
+                    <p>T-Shirts</p>
+                </a>
+        
+                <a href="https://www.stylehub.com/products/outerwear" class="category-item">
+                    <div class="pentagon">
+                        <img src="img/shopping.webp" alt="Outerwear">
+                    </div>
+                    <p>Outerwear</p>
+                </a>
+        
+                <a href="https://www.stylehub.com/products/accessories" class="category-item">
+                    <div class="pentagon">
+                        <img src="img/access.jpg" alt="Accessories">
+                    </div>
+                    <p>Accessories</p>
+                </a>
+            </div>
+        </section>
+        
+
+        <section id="products">
+            <h2>Most Popular</h2>
+            <div class="product-carousel">
+                <button class="carousel-control prev" onclick="moveCarousel(-1)"><</button>
+                <div class="carousel-container">
+                    <div id="product-list" class="carousel-content"></div>
+                </div>
+                <button class="carousel-control next" onclick="moveCarousel(1)">></button>
+            </div>
+        </section>
+
+        <section class="subscribe">
+            <h2>Get 10% Off Your First Order</h2>
+            <form id="subscribe-form">
+                <input type="email" placeholder="Enter your email" id="email">
+                <button type="button" onclick="subscribe()">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 StyleHub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        async function fetchProducts(category) {
+            const response = await fetch(`/fetch_products?category=${category}`);
+            const products = await response.json();
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product-item');
+                productDiv.innerHTML = `
+                    <a href="${product.url}" target="_blank">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>Price: $${product.price}</p>
+                        <p>Reviews: ${product.reviews} stars</p>
+                    </a>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        async function subscribe() {
+            const email = document.getElementById('email').value;
+            if (!email) {
+                alert('Please enter a valid email.');
+                return;
+            }
+            const response = await fetch('/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const result = await response.json();
+            alert(result.message);
+        }
+        function toggleSearchBar() {
+            const searchBar = document.getElementById("search-bar");
+            if (searchBar.style.display === "none" || searchBar.style.opacity === "0") {
+                searchBar.style.display = "block";
+                setTimeout(() => {
+                    searchBar.style.opacity = "1";
+                    searchBar.style.transform = "translateY(0)";
+                }, 10);
+            } else {
+                searchBar.style.opacity = "0";
+                searchBar.style.transform = "translateY(-10px)";
+                setTimeout(() => {
+                    searchBar.style.display = "none";
+                }, 400);
+            }
+        }
+
+        function performSearch() {
+            const query = document.querySelector("#search-bar input").value;
+            if (query) {
+                alert(`Searching for: ${query}`);
+                // Replace the alert with actual search functionality
+            }
+        }
+
+
+
+
+        // Hamburger Menu Toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu.style.display === 'flex') {
+                mobileMenu.style.display = 'none';
+            } else {
+                mobileMenu.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>

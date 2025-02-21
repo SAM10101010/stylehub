@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub - Category Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">StyleHub</div>
+        <a href="/" class="back-home">🏠 Back to Home</a>
+    </header>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <h2>Select a Category</h2>
+        <div class="category-buttons">
+            <button onclick="filterProducts(1)">Jeans</button>
+            <button onclick="filterProducts(2)">Dresses</button>
+            <button onclick="filterProducts(3)">T-Shirts</button>
+            <button onclick="filterProducts(4)">Outerwear</button>
+            <button onclick="filterProducts(5)">Accessories</button>
+        </div>
+    </section>
+
+    <!-- Product List Section -->
+    <h1 id="category-title">Category Products</h1>
+    <section id="product-list" class="grid"></section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 StyleHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to get query parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Mapping of category IDs to category names
+        const categories = {
+            1: "Jeans",
+            2: "Dresses",
+            3: "T-Shirts",
+            4: "Outerwear",
+            5: "Accessories"
+        };
+
+        // Fetch and display products based on category ID
+        async function fetchProducts(categoryId) {
+            // Update the category title
+            const categoryTitle = document.getElementById("category-title");
+            if (categoryId && categories[categoryId]) {
+                categoryTitle.innerText = `${categories[categoryId]} Products`;
+            } else {
+                categoryTitle.innerText = "Please select a category";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/products?category_id=${categoryId}`);
+                const products = await response.json();
+                const productList = document.getElementById("product-list");
+                productList.innerHTML = "";
+
+                if (products.length === 0) {
+                    productList.innerHTML = "<p>No products available for this category.</p>";
+                    return;
+                }
+
+                // Display products
+                products.forEach(product => {
+                    const productCard = document.createElement("div");
+                    productCard.classList.add("product-card");
+                    productCard.innerHTML = `
+                        <img src="${product.photo}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>Price: $${product.price}</p>
+                    `;
+                    productList.appendChild(productCard);
+                });
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        }
+
+        // Filter products by category
+        function filterProducts(categoryId) {
+            fetchProducts(categoryId);
+        }
+
+        // Load products based on query parameter on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            const categoryId = getQueryParam("category_id");
+            if (categoryId) {
+                fetchProducts(categoryId);
+            } else {
+                document.getElementById("category-title").innerText = "Please select a category";
+            }
+        });
+        // Function to filter products by category
+        // async function filterProducts(categoryId) {
+        //     try {
+        //         const response = await fetch(`/products?category_id=${categoryId}`);
+        //         const products = await response.json();
+        //         const productList = document.getElementById("product-list");
+        //         productList.innerHTML = "";
+
+        //         if (products.length === 0) {
+        //             productList.innerHTML = "<p>No products available for this category.</p>";
+        //             return;
+        //         }
+
+        //         products.forEach(product => {
+        //             const productCard = document.createElement("div");
+        //             productCard.classList.add("product-card");
+        //             productCard.innerHTML = `
+        //                 <img src="${product.photo}" alt="${product.name}">
+        //                 <h3>${product.name}</h3>
+        //                 <p>Price: $${product.price}</p>
+        //             `;
+        //             productList.appendChild(productCard);
+        //         });
+        //     } catch (error) {
+        //         console.error("Error fetching products:", error);
+        //     }
+        // }
+
+        // // Load products based on query parameter on page load
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const categoryId = new URLSearchParams(window.location.search).get("category_id");
+        //     if (categoryId) {
+        //         filterProducts(categoryId);
+        //     } else {
+        //         document.getElementById("category-title").innerText = "Please select a category.";
+        //     }
+        // });
+    </script>
+</body>
+</html>

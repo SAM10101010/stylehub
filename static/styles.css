@@ -1,0 +1,296 @@
+/* General Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(135deg, #7d3cff, #d29fff);
+    padding: 20px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 1000;
+}
+
+/* Logo on the Left */
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Back to Home Link on the Right */
+.back-home {
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.back-home:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Categories Section */
+.categories-section {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 1200px;
+}
+.categories-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #7d3cff;
+    position: relative;
+    display: inline-block;
+}
+.categories-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(135deg, #7d3cff, #d29fff);
+    border-radius: 5px;
+}
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.category-buttons button {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #7d3cff, #d29fff);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.category-buttons button:hover {
+    background: linear-gradient(135deg, #5a29b4, #9c65ff);
+    transform: scale(1.05);
+}
+
+/* Category Title Styling */
+#category-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #7d3cff;
+    text-align: center;
+    margin: 40px 0 20px;
+    position: relative;
+    animation: fadeInDown 1s ease-in-out;
+}
+#category-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(135deg, #7d3cff, #d29fff);
+    border-radius: 5px;
+}
+
+/* Product Grid Layout */
+
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 35px;
+padding: 50px 20px;
+max-width: 1200px;
+margin: auto;
+animation: fadeInUp 1s ease-in-out;
+}
+
+.product-card {
+background-color: white;
+padding: 25px;
+border-radius: 15px;
+box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+text-align: center;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+position: relative;
+overflow: hidden;
+}
+.product-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(135deg, rgba(125, 60, 255, 0.1), rgba(210, 159, 255, 0.1));
+opacity: 0;
+transition: opacity 0.3s ease;
+z-index: -1;
+}
+.product-card:hover {
+transform: translateY(-12px);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.product-card:hover::before {
+opacity: 1;
+}
+.product-card img {
+width: 100%;
+height: 220px;
+object-fit: cover;
+border-radius: 12px;
+margin-bottom: 18px;
+transition: transform 0.3s ease;
+}
+.product-card img:hover {
+transform: scale(1.1);
+}
+.product-card h3 {
+font-size: 22px;
+color: #7d3cff;
+margin: 10px 0 8px;
+font-weight: 700;
+letter-spacing: 0.5px;
+}
+.product-card p {
+font-size: 16px;
+color: #555;
+margin: 0;
+line-height: 1.5;
+}
+.product-card button {
+margin-top: 20px;
+padding: 14px 24px;
+background: linear-gradient(135deg, #7d3cff, #d29fff);
+color: white;
+border: none;
+border-radius: 10px;
+cursor: pointer;
+font-size: 16px;
+font-weight: 600;
+transition: background 0.3s ease, transform 0.3s ease;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.product-card button:hover {
+background: linear-gradient(135deg, #5a29b4, #9c65ff);
+transform: scale(1.05);
+}
+
+/* Footer Styling */
+footer {
+    background: linear-gradient(135deg, #7d3cff, #d29fff);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 40px;
+    position: relative;
+    overflow: hidden;
+}
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+    opacity: 0.5;
+    pointer-events: none;
+}
+footer p {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+footer a:hover {
+    color: #ffcc00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .back-home {
+        align-self: flex-end;
+    }
+    .categories-section h2 {
+        font-size: 24px;
+    }
+    .category-buttons {
+        gap: 10px;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .product-card {
+        padding: 20px;
+    }
+    .product-card img {
+        height: 200px;
+    }
+    footer p {
+        font-size: 16px;
+    }
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

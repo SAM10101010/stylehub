@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StyleHub - Landing Page</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 <body>
     <header>
@@ -75,42 +76,26 @@
         <section class="categories">
             <h2>Categories</h2>
             <div id="category-list">
-                <a href="https://www.stylehub.com/products/jeans" class="category-item">
-                    <div class="pentagon">
-                        <img src="img/jeans.jpg" alt="Jeans">
-                    </div>
-                    <p>Jeans</p>
-                </a>
+                {% set categories = [
+                    {"id": 1, "name": "Jeans", "image": "jeans.jpg"},
+                    {"id": 2, "name": "Dresses", "image": "dress.avif"},
+                    {"id": 3, "name": "T-Shirts", "image": "tshirt.webp"},
+                    {"id": 4, "name": "Outerwear", "image": "shopping.webp"},
+                    {"id": 5, "name": "Accessories", "image": "access.jpg"}
+                ] %}
         
-                <a href="https://www.stylehub.com/products/dresses" class="category-item">
+                {% for category in categories %}
+                <a href="{{ url_for('categories', category_id=category.id) }}" class="category-item">
                     <div class="pentagon">
-                        <img src="img/dress.avif" alt="Dresses">
+                        <img src="{{ url_for('static', filename='img/' + category.image) }}" alt="{{ category.name }}">
                     </div>
-                    <p>Dresses</p>
+                    <p>{{ category.name }}</p>
                 </a>
-        
-                <a href="https://www.stylehub.com/products/t-shirts" class="category-item">
-                    <div class="pentagon">
-                        <img src="img/tshirt.webp" alt="T-Shirts">
-                    </div>
-                    <p>T-Shirts</p>
-                </a>
-        
-                <a href="https://www.stylehub.com/products/outerwear" class="category-item">
-                    <div class="pentagon">
-                        <img src="img/shopping.webp" alt="Outerwear">
-                    </div>
-                    <p>Outerwear</p>
-                </a>
-        
-                <a href="https://www.stylehub.com/products/accessories" class="category-item">
-                    <div class="pentagon">
-                        <img src="img/access.jpg" alt="Accessories">
-                    </div>
-                    <p>Accessories</p>
-                </a>
+                {% endfor %}
             </div>
         </section>
+        
+        
         
 
         <section id="products">
@@ -137,7 +122,7 @@
         <p>&copy; 2025 StyleHub. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
     <script>
         async function fetchProducts(category) {
             const response = await fetch(`/fetch_products?category=${category}`);

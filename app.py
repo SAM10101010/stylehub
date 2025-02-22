@@ -22,10 +22,9 @@ def categories():
     return render_template("categories.html")
 
 # Route to render the cart page
-@app.route("/cart")
+@app.route("/cart.html")
 def cart():
     return render_template("cart.html")
-
 
 # Fetch all categories for dropdown (optional)
 @app.route("/categories")

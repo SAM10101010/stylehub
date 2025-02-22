@@ -10,7 +10,10 @@
     <header>
         <div class="logo">StyleHub</div>
         <a href="/" class="back-home">🏠 Back to Home</a>
-        <button id="cart-btn" onclick="viewCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
+        <button id="cart-btn" onclick="goToCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
+
+        
+        
     </header>
 
     <section class="categories-section">
@@ -105,6 +108,12 @@
             updateCartCount();
             alert(`${productName} added to cart!`);
         }
+        // Function to navigate to the cart page with cart data
+        function goToCart() {
+            localStorage.setItem("cart", JSON.stringify(cart)); // Store cart in localStorage
+            window.location.href = "/cart.html"; // Redirect to the cart page
+        }
+
 
         // Function to update cart count
         function updateCartCount() {

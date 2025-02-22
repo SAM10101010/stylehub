@@ -98,9 +98,14 @@
         }
 
         // Function to simulate buying a product
-        function buyProduct(productId) {
-            alert(`Product with ID ${productId} has been bought!`);
+        // Function to simulate buying a product and redirect to cart
+        function buyProduct(productId, productName, productPrice) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push({ id: productId, name: productName, price: productPrice });
+            localStorage.setItem("cart", JSON.stringify(cart)); // Store cart data
+            window.location.href = "/cart.html"; // Redirect to the cart page
         }
+
 
         // Function to add product to cart
         function addToCart(productId, productName, productPrice) {
@@ -191,7 +196,8 @@
                         <img src="${product.image_url || product.photo}" alt="${product.name}">
                         <h3>${product.name}</h3>
                         <p>Price: $${product.price}</p>
-                        <button onclick="buyProduct(${product.id})">🛒 Buy Now</button>
+                        <button onclick="buyProduct(${product.id}, '${product.name}', ${product.price})">🛒 Buy Now</button>
+
                         <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
                     `;
                     productList.appendChild(productCard);

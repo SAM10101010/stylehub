@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - StyleHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact_style.css') }}">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>📞 Contact Us</h1>
+        <p>Have questions or feedback? We'd love to hear from you!</p>
+        <form action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="b47f4da1-cee0-47c9-9907-9c706eed0f5d">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+            <button type="submit">📨 Send Message</button>
+        </form>
+        <footer>
+            <p>&copy; 2025 StyleHub. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('https://img.freepik.com/free-photo/laptop-blank-screen-hopping-cart-full-gifts-with-copyspace-online-shopping-concept_1423-92.jpg?t=st=1740216743~exp=1740220343~hmac=4aa93b3104e6b0d7b3674b6a5b4b9dedbe0b6cabf40534c17994f41fff49d07e&w=1380') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px 20px;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)); /* Gradient overlay */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    animation: fadeIn 1.5s ease-in-out;
+    word-wrap: break-word; /* Ensure long words break into multiple lines */
+    overflow: hidden; /* Prevent content from overflowing */
+}
+
+/* Input and Button Styles */
+input, textarea, button {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+textarea {
+    resize: vertical; /* Allow vertical resizing only */
+    min-height: 100px; /* Set a minimum height for textareas */
+    max-height: 200px; /* Limit maximum height */
+}
+
+input:focus, textarea:focus {
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+    transform: scale(1.02);
+}
+
+button {
+    background: linear-gradient(135deg, #ff5722, #e64a19);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #e64a19, #ff5722);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+}
+
+/* Footer Styles */
+footer {
+    margin-top: 40px;
+    color: #ccc;
+    font-size: 14px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease-in-out;
+}
+
+footer:hover {
+    opacity: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 30px auto;
+        padding: 30px 15px;
+    }
+
+    input, textarea, button {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    footer {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    input, textarea, button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    footer {
+        font-size: 10px;
+    }
+}

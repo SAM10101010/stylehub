@@ -87,6 +87,8 @@
                 products.forEach(product => {
                     const productCard = document.createElement("div");
                     productCard.classList.add("product-card");
+
+                    // Product Card Content (with buttons)
                     productCard.innerHTML = `
                         <img src="${product.photo}" alt="${product.name}" style="width: 150px; height: 150px;">
                         <h3>${product.name}</h3>
@@ -94,10 +96,56 @@
                         <button onclick="buyProduct(${product.id}, '${product.name}', ${product.price}, '${product.photo}')">🛒 Buy Now</button>
                         <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.photo}')">🛍️ Add to Cart</button>
                     `;
+
+                    // Add click event listener to show modal
+                    productCard.addEventListener("click", (e) => {
+                        // Prevent button clicks from triggering the modal
+                        if (!e.target.closest("button")) {
+                            showModal(product);
+                        }
+                    });
+
+                    // Append product card to product list
                     productList.appendChild(productCard);
                 });
             } catch (error) {
                 console.error("Error fetching products:", error);
+            }
+        }
+
+                // Function to show the modal
+                // Function to show the modal
+        function showModal(product) {
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <img src="${product.photo}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.description || "No description available."}</p>
+                    <p>Price: $${product.price}</p>
+                    <button onclick="buyProduct(${product.id}, '${product.name}', ${product.price}, '${product.photo}')">🛒 Buy Now</button>
+                    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.photo}')">🛍️ Add to Cart</button>
+                </div>
+            `;
+
+            // Close modal when clicking the close button or outside the modal
+            modal.querySelector(".close-modal").addEventListener("click", () => hideModal(modal));
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) hideModal(modal); // Close modal if clicking outside content
+            });
+
+            // Append modal to body and show it
+            document.body.appendChild(modal);
+            modal.style.display = "flex";
+        }
+
+                // Function to hide the modal
+        // Function to hide the modal
+        function hideModal(modal) {
+            if (modal) {
+                modal.remove();
             }
         }
 

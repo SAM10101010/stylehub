@@ -41,6 +41,145 @@ header {
     }
 }
 
+/* Modal styling */
+/* Modal Styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Darker semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevent scrolling when modal is open */
+}
+
+.modal-content {
+    background-color: #1a1a1a; /* Dark background for contrast */
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); /* Subtle glowing shadow */
+    animation: fadeInModal 0.5s ease-out forwards; /* Smooth fade-in animation */
+    transform: scale(0.9); /* Start smaller */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-content:hover {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.6); /* Stronger glow on hover */
+}
+
+/* Animation for modal content fade-in */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-content img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 50%; /* Circular image */
+    border: 3px solid #7d3cff; /* Glowing border */
+    animation: pulseImage 2s infinite; /* Add pulsing effect */
+}
+
+/* Pulsing animation for the image */
+@keyframes pulseImage {
+    0% {
+        border-color: #7d3cff;
+        box-shadow: 0 0 10px #7d3cff, 0 0 20px #7d3cff;
+    }
+    50% {
+        border-color: #ff6b6b;
+        box-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff6b6b;
+    }
+    100% {
+        border-color: #7d3cff;
+        box-shadow: 0 0 10px #7d3cff, 0 0 20px #7d3cff;
+    }
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Glowing text */
+    animation: glowText 2s infinite; /* Add glowing animation */
+}
+
+/* Glowing animation for the heading */
+@keyframes glowText {
+    0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); }
+    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+    100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); }
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #dcdcdc;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.modal-content button {
+    margin: 5px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px; /* Rounded buttons */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle glowing effect */
+}
+
+.modal-content button:first-child {
+    background-color: #28a745;
+    color: white;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green glow */
+}
+
+.modal-content button:last-child {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6); /* Blue glow */
+}
+
+.modal-content button:hover {
+    transform: scale(1.1); /* Enlarge on hover */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Stronger glow on hover */
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease, transform 0.3s ease;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle glowing effect */
+}
+
+.close-modal:hover {
+    color: #ff6b6b; /* Red color on hover */
+    transform: rotate(90deg); /* Rotate effect */
+    text-shadow: 0 0 10px #ff6b6b; /* Strong glowing effect */
+}
 /* Cart Button Styling */
 #cart-btn {
     padding: 10px 20px;
@@ -121,6 +260,7 @@ header {
     text-align: center;
     padding: 30px 20px;
     background-color: #fff;
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
     max-width: 1200px;

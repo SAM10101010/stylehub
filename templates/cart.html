@@ -42,6 +42,7 @@
         
 
         // Display cart items
+        // Display cart items
         function displayCart() {
             const cartList = document.getElementById("cart-list");
             const emptyMessage = document.getElementById("empty-cart-message");
@@ -51,6 +52,7 @@
             const grandTotal = document.getElementById("grand-total");
 
             cartList.innerHTML = "";
+
             if (cart.length === 0) {
                 emptyMessage.style.display = "block";
                 totalItems.innerText = 0;
@@ -64,7 +66,7 @@
             let total = 0;
 
             cart.forEach((item, index) => {
-                const quantity = item.quantity ?? 1;  // Default to 1 if undefined
+                const quantity = item.quantity ?? 1;
                 const cartItem = document.createElement("div");
                 cartItem.classList.add("cart-item");
 
@@ -72,21 +74,23 @@
                 total += itemTotal;
 
                 cartItem.innerHTML = `
-                    <img src="${item.photo || 'placeholder.jpg'}" alt="${item.name}" class="product-image" style="width: 100px; height: 100px;">
-                    <div>
-                        <h3>${item.name}</h3>
-                        <p>${item.description || 'No description available.'}</p>
-                        <p>Price: $${item.price.toFixed(2)} each</p>
-                        <p>
-                            Quantity: 
-                            <button onclick="changeQuantity(${index}, -1)">➖</button>
-                            <span>${quantity}</span>
-                            <button onclick="changeQuantity(${index}, 1)">➕</button>
-                        </p>
-                        <p>Total: $<span class="item-total">${itemTotal.toFixed(2)}</span></p>
-                        <button onclick="removeFromCart(${index})">❌ Remove</button>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <img src="${item.photo}" alt="${item.name}" style="width: 100px; height: 100px; border-radius: 10px;">
+                        <div>
+                            <h3>${item.name}</h3>
+                            <p>Price: $${item.price.toFixed(2)} each</p>
+                            <p>
+                                Quantity: 
+                                <button onclick="changeQuantity(${index}, -1)">➖</button>
+                                <span>${quantity}</span>
+                                <button onclick="changeQuantity(${index}, 1)">➕</button>
+                            </p>
+                            <p>Total: $<span class="item-total">${itemTotal.toFixed(2)}</span></p>
+                            <button onclick="removeFromCart(${index})">❌ Remove</button>
+                        </div>
                     </div>
                 `;
+
                 cartList.appendChild(cartItem);
             });
 
@@ -95,6 +99,7 @@
             discount.innerText = "0.00";
             grandTotal.innerText = total.toFixed(2);
         }
+
 
         // Change quantity
         function changeQuantity(index, delta) {

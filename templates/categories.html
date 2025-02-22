@@ -11,9 +11,6 @@
         <div class="logo">StyleHub</div>
         <a href="/" class="back-home">🏠 Back to Home</a>
         <button id="cart-btn" onclick="goToCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
-
-        
-        
     </header>
 
     <section class="categories-section">
@@ -33,8 +30,10 @@
     <footer>
         <p>&copy; 2025 StyleHub. All rights reserved.</p>
     </footer>
+
     <script>
-        let cart = [];
+        // Initialize cart from localStorage
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         // Function to get query parameters
         function getQueryParam(param) {
@@ -51,114 +50,10 @@
             5: "Accessories"
         };
 
-        // Fetch and display products based on category ID
-        async function fetchProducts(categoryId) {
-            const categoryTitle = document.getElementById("category-title");
-
-            if (categoryId !== "all") {
-                categoryId = parseInt(categoryId);
-            }
-
-            if (categoryId === "all") {
-                categoryTitle.innerText = "All Products";
-            } else if (categories[categoryId]) {
-                categoryTitle.innerText = `${categories[categoryId]} Products`;
-            } else {
-                categoryTitle.innerText = "Please select a category";
-                return;
-            }
-
-            try {
-                const url = categoryId === "all" ? "/products" : `/products?category_id=${categoryId}`;
-                const response = await fetch(url);
-                const products = await response.json();
-                const productList = document.getElementById("product-list");
-                productList.innerHTML = "";
-
-                if (products.length === 0) {
-                    productList.innerHTML = "<p>No products available for this category.</p>";
-                    return;
-                }
-
-                products.forEach(product => {
-                    const productCard = document.createElement("div");
-                    productCard.classList.add("product-card");
-                    productCard.innerHTML = `
-                        <img src="${product.image_url || product.photo}" alt="${product.name}">
-                        <h3>${product.name}</h3>
-                        <p>Price: $${product.price}</p>
-                        <button onclick="buyProduct(${parseInt(product.id)})">🛒 Buy Now</button>
-                        <button onclick="addToCart(${parseInt(product.id)}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
-                    `;
-                    productList.appendChild(productCard);
-                });
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            }
-        }
-
-        // Function to simulate buying a product
-        // Function to simulate buying a product and redirect to cart
-        function buyProduct(productId, productName, productPrice) {
-            const cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart.push({ id: productId, name: productName, price: productPrice });
-            localStorage.setItem("cart", JSON.stringify(cart)); // Store cart data
-            window.location.href = "/cart.html"; // Redirect to the cart page
-        }
-
-
-        // Function to add product to cart
-        function addToCart(productId, productName, productPrice) {
-            cart.push({ id: productId, name: productName, price: productPrice });
-            updateCartCount();
-            alert(`${productName} added to cart!`);
-        }
-        // Function to navigate to the cart page with cart data
-        function goToCart() {
-            localStorage.setItem("cart", JSON.stringify(cart)); // Store cart in localStorage
-            window.location.href = "/cart.html"; // Redirect to the cart page
-        }
-
-        
-
-
-        // Function to update cart count
-        function updateCartCount() {
-            const cartCount = document.getElementById("cart-count");
-            if (cartCount) {
-                cartCount.innerText = cart.length;
-            }
-        }
-
-        // Function to view cart items
-        function viewCart() {
-            if (cart.length === 0) {
-                alert("Your cart is empty.");
-                return;
-            }
-
-            let cartDetails = "🛒 Your Cart:\n";
-            cart.forEach(item => {
-                cartDetails += `🔸 ${item.name} - $${item.price}\n`;
-            });
-            alert(cartDetails);
-        }
-
-        // Filter products by category
-        function filterProducts(categoryId) {
-            fetchProducts(categoryId);
-        }
-
-        // Load products based on query parameter on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            const categoryId = getQueryParam("category_id") || "all";
-            fetchProducts(categoryId);
-        });
-    </script>
-    <script>
+        // Fetch and display products based on category ID or search query
         async function fetchProducts(categoryId = "all", searchQuery = "") {
             const categoryTitle = document.getElementById("category-title");
-    
+
             // Display category or search title
             if (searchQuery) {
                 categoryTitle.innerText = `Search Results for "${searchQuery}"`;
@@ -170,7 +65,7 @@
                 categoryTitle.innerText = "Please select a category";
                 return;
             }
-    
+
             try {
                 let url = "/products";
                 if (searchQuery) {
@@ -178,27 +73,26 @@
                 } else if (categoryId !== "all") {
                     url += `?category_id=${categoryId}`;
                 }
-    
+
                 const response = await fetch(url);
                 const products = await response.json();
                 const productList = document.getElementById("product-list");
                 productList.innerHTML = "";
-    
+
                 if (products.length === 0) {
                     productList.innerHTML = "<p>No products found.</p>";
                     return;
                 }
-    
+
                 products.forEach(product => {
                     const productCard = document.createElement("div");
                     productCard.classList.add("product-card");
                     productCard.innerHTML = `
-                        <img src="${product.image_url || product.photo}" alt="${product.name}">
+                        <img src="${product.photo}" alt="${product.name}" style="width: 150px; height: 150px;">
                         <h3>${product.name}</h3>
                         <p>Price: $${product.price}</p>
-                        <button onclick="buyProduct(${product.id}, '${product.name}', ${product.price})">🛒 Buy Now</button>
-
-                        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
+                        <button onclick="buyProduct(${product.id}, '${product.name}', ${product.price}, '${product.photo}')">🛒 Buy Now</button>
+                        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.photo}')">🛍️ Add to Cart</button>
                     `;
                     productList.appendChild(productCard);
                 });
@@ -206,13 +100,88 @@
                 console.error("Error fetching products:", error);
             }
         }
-    
-        // Check for search query on page load
+
+        // Filter products by category
+        function filterProducts(categoryId) {
+            fetchProducts(categoryId); // Pass the categoryId directly to fetchProducts
+        }
+
+        // Function to simulate buying a product
+        function buyProduct(productId, productName, productPrice, productImage) {
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                photo: productImage, // Store image URL
+                quantity: 1
+            };
+
+            // Add the product to the cart array
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push(product);
+            }
+
+            // Update localStorage and cart count
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+
+            // Redirect to the cart page
+            window.location.href = "/cart.html";
+        }
+
+        // Function to add product to cart with image URL
+        function addToCart(productId, productName, productPrice, productImage) {
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                photo: productImage, // Store image URL
+                quantity: 1
+            };
+
+            // Check if the product already exists in the cart
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push(product);
+            }
+
+            // Update localStorage and cart count
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            alert(`${productName} added to cart!`);
+        }
+
+        // Function to navigate to the cart page with cart data
+        function goToCart() {
+            // Ensure the cart in localStorage is up-to-date
+            localStorage.setItem("cart", JSON.stringify(cart));
+            window.location.href = "/cart.html"; // Redirect to the cart page
+        }
+
+        // Function to update cart count
+        function updateCartCount() {
+            const cartCount = document.getElementById("cart-count");
+            if (cartCount) {
+                cartCount.innerText = cart.reduce((total, item) => total + item.quantity, 0);
+            }
+        }
+
+        // Load products based on query parameter or search query on page load
         document.addEventListener("DOMContentLoaded", () => {
+            // Initialize cart from localStorage
+            cart = JSON.parse(localStorage.getItem("cart")) || [];
+            updateCartCount();
+
+            // Check for search query or category ID
             const urlParams = new URLSearchParams(window.location.search);
             const searchQuery = urlParams.get("search");
             const categoryId = urlParams.get("category_id") || "all";
-    
+
             if (searchQuery) {
                 fetchProducts("all", searchQuery);
             } else {
@@ -220,6 +189,5 @@
             }
         });
     </script>
-    
 </body>
 </html>

@@ -13,7 +13,6 @@
             <div class="logo">StyleHub</div>
             <ul class="nav-links">
                 <li><a href="/categories.html?category_id=all" >Shop</a></li>
-                <li><a href="https://www.stylehub.com/lookbook" >Lookbook</a></li>
                 <li><a href="/blog.html">Blog</a></li>
                 <li><a href="/blog.html">About</a></li>
                 <li><a href="/contact.html">Contact</a></li>
@@ -32,7 +31,6 @@
         </nav>
         <div id="mobile-menu">
             <a href="/categories.html?category_id=all" >Shop</a>
-            <a href="https://www.stylehub.com/lookbook" >Lookbook</a>
             <a href="/blog.html">Blog</a>
             <a href="/blog.html" >About</a>
             <a href="/contact.html" >Contact</a>
@@ -200,7 +198,7 @@
                     productDiv.classList.add('product-item');
                     productDiv.innerHTML = `
                         <a href="${product.url}" target="_blank">
-                            <img src="/static/img/${product.image}" alt="${product.name}">
+                            <img src="/static/popularimg/${product.image}" alt="${product.name}">
                             <h3>${product.name}</h3>
                             <p>Price: $${product.price}</p>
                             <p>Reviews: ⭐ ${product.reviews}</p>

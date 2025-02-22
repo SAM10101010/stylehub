@@ -19,7 +19,8 @@ def index():
 # Route to render the category page
 @app.route("/categories.html")
 def categories():
-    return render_template("categories.html")
+    search_query = request.args.get("search", default=None, type=str)
+    return render_template("categories.html", search_query=search_query)
 
 # Route to render the cart page
 @app.route("/cart.html")
@@ -45,6 +46,34 @@ def get_categories():
         cursor.close()
         connection.close()
 
+# Fetch products based on category ID or search query
+@app.route("/products")
+def get_products():
+    category_id = request.args.get("category_id", type=int)
+    search_query = request.args.get("search", type=str)
+
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        if search_query:
+            query = "SELECT * FROM products WHERE name LIKE %s"
+            cursor.execute(query, (f"%{search_query}%",))
+        elif category_id:
+            query = "SELECT * FROM products WHERE category_id = %s"
+            cursor.execute(query, (category_id,))
+        else:
+            query = "SELECT * FROM products"
+            cursor.execute(query)
+
+        products = cursor.fetchall()
+        return jsonify(products)
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    finally:
+        cursor.close()
+        connection.close()
+
 # Fetch most popular products
 @app.route("/most-popular")
 def get_most_popular():
@@ -54,30 +83,6 @@ def get_most_popular():
         cursor.execute("SELECT * FROM most_popular")
         popular_products = cursor.fetchall()
         return jsonify(popular_products)
-    except Exception as e:
-        return jsonify({"error": str(e)})
-    finally:
-        cursor.close()
-        connection.close()
-
-# Fetch products by category ID
-@app.route("/products")
-def get_products():
-    category_id = request.args.get("category_id", type=int)
-    try:
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor(dictionary=True)
-
-        if category_id:
-            query = "SELECT * FROM products WHERE category_id = %s"
-            cursor.execute(query, (category_id,))
-        else:
-            query = "SELECT * FROM products"
-            cursor.execute(query)
-
-        products = cursor.fetchall()
-        return jsonify(products)
-
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:

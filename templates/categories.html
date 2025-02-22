@@ -114,6 +114,8 @@
             window.location.href = "/cart.html"; // Redirect to the cart page
         }
 
+        
+
 
         // Function to update cart count
         function updateCartCount() {
@@ -148,5 +150,70 @@
             fetchProducts(categoryId);
         });
     </script>
+    <script>
+        async function fetchProducts(categoryId = "all", searchQuery = "") {
+            const categoryTitle = document.getElementById("category-title");
+    
+            // Display category or search title
+            if (searchQuery) {
+                categoryTitle.innerText = `Search Results for "${searchQuery}"`;
+            } else if (categoryId === "all") {
+                categoryTitle.innerText = "All Products";
+            } else if (categories[categoryId]) {
+                categoryTitle.innerText = `${categories[categoryId]} Products`;
+            } else {
+                categoryTitle.innerText = "Please select a category";
+                return;
+            }
+    
+            try {
+                let url = "/products";
+                if (searchQuery) {
+                    url += `?search=${encodeURIComponent(searchQuery)}`;
+                } else if (categoryId !== "all") {
+                    url += `?category_id=${categoryId}`;
+                }
+    
+                const response = await fetch(url);
+                const products = await response.json();
+                const productList = document.getElementById("product-list");
+                productList.innerHTML = "";
+    
+                if (products.length === 0) {
+                    productList.innerHTML = "<p>No products found.</p>";
+                    return;
+                }
+    
+                products.forEach(product => {
+                    const productCard = document.createElement("div");
+                    productCard.classList.add("product-card");
+                    productCard.innerHTML = `
+                        <img src="${product.image_url || product.photo}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>Price: $${product.price}</p>
+                        <button onclick="buyProduct(${product.id})">🛒 Buy Now</button>
+                        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
+                    `;
+                    productList.appendChild(productCard);
+                });
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        }
+    
+        // Check for search query on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get("search");
+            const categoryId = urlParams.get("category_id") || "all";
+    
+            if (searchQuery) {
+                fetchProducts("all", searchQuery);
+            } else {
+                fetchProducts(categoryId);
+            }
+        });
+    </script>
+    
 </body>
 </html>

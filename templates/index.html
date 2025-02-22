@@ -126,6 +126,7 @@
 
     <script src="../script.js"></script>
     <script>
+        
         async function fetchProducts(category) {
             const response = await fetch(`/fetch_products?category=${category}`);
             const products = await response.json();
@@ -178,12 +179,14 @@
         }
 
         function performSearch() {
-            const query = document.querySelector("#search-bar input").value;
+            const query = document.querySelector("#search-bar input").value.trim();
             if (query) {
-                alert(`Searching for: ${query}`);
-                // Replace the alert with actual search functionality
+                window.location.href = `/categories.html?search=${encodeURIComponent(query)}`;
+            } else {
+                alert("Please enter a search term.");
             }
         }
+
 
         async function fetchMostPopular() {
             try {

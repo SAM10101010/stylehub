@@ -220,14 +220,87 @@
 
 
         // Hamburger Menu Toggle
-        document.querySelector('.hamburger').addEventListener('click', function() {
+        document.querySelector('.hamburger').addEventListener('click', function () {
             const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu.style.display === 'flex') {
-                mobileMenu.style.display = 'none';
-            } else {
+
+            // Toggle the 'active' class for better state management
+            mobileMenu.classList.toggle('active');
+
+            // Add smooth animations using CSS transitions
+            if (mobileMenu.classList.contains('active')) {
                 mobileMenu.style.display = 'flex';
+                setTimeout(() => {
+                    mobileMenu.style.opacity = '1';
+                    mobileMenu.style.transform = 'translateY(0)';
+                }, 10); // Small delay to allow display change to take effect
+            } else {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    mobileMenu.style.display = 'none';
+                }, 300); // Match this duration with the CSS transition duration
+            }
+
+            // Close the menu when clicking outside of it
+            document.addEventListener('click', closeMenuOutside);
+        });
+
+        // Function to close the menu when clicking outside
+        function closeMenuOutside(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    mobileMenu.style.display = 'none';
+                }, 300);
+
+                // Remove the event listener after closing the menu
+                document.removeEventListener('click', closeMenuOutside);
+            }
+        }
+
+        // Optional: Close the menu when the Escape key is pressed
+        document.addEventListener('keydown', function (event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    mobileMenu.style.display = 'none';
+                }, 300);
             }
         });
+
+        // Close the menu when the hamburger icon becomes invisible
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting && mobileMenu.classList.contains('active')) {
+                        // If the hamburger is not visible and the menu is open, close the menu
+                        mobileMenu.classList.remove('active');
+                        mobileMenu.style.opacity = '0';
+                        mobileMenu.style.transform = 'translateY(-20px)';
+                        setTimeout(() => {
+                            mobileMenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            },
+            {
+                threshold: 0.1, // Trigger when at least 10% of the hamburger is visible
+            }
+        );
+
+        // Start observing the hamburger icon
+        observer.observe(hamburger);
     </script>
 </body>
 </html>

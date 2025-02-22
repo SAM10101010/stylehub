@@ -160,33 +160,71 @@ nav {
     color: #7d3cff;
 }
 
-/* Mobile menu */
+/* Mobile Menu Container */
 #mobile-menu {
-    display: none;
+    display: none; /* Hidden by default */
     flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    gap: 15px; /* Increased spacing between items */
+    padding: 20px; /* More padding for better spacing */
+    background-color: #ffffff; /* Clean white background */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Softer shadow for depth */
+    border-radius: 15px; /* Rounded corners for a modern look */
+    position: absolute; /* Positioned absolutely for dropdown behavior */
+    top: 60px; /* Adjust based on your header height */
+    right: 20px; /* Align to the right */
+    width: 250px; /* Fixed width for consistency */
+    z-index: 1000; /* Ensure it appears above other elements */
+    animation: slideIn 0.3s ease-in-out; /* Smooth slide-in animation */
 }
 
-
+/* Menu Links */
 #mobile-menu a {
-    padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
-    color: #333;
+    display: block;
+    padding: 15px 20px; /* Increased padding for larger touch targets */
+    color: #333333; /* Dark text for contrast */
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    font-size: 18px; /* Larger font size for readability */
+    font-weight: 500; /* Slightly bold for emphasis */
+    border-radius: 8px; /* Rounded corners for each link */
+    transition: all 0.3s ease; /* Smooth transitions for hover effects */
 }
 
+/* Hover Effect for Links */
 #mobile-menu a:hover {
-    background-color: #f0f0f0;
+    background-color: #ff5722; /* Vibrant orange background */
+    color: #ffffff; /* White text for contrast */
+    transform: scale(1.05); /* Slight scaling effect */
+    box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3); /* Subtle glow effect */
 }
 
+/* Remove Border from Last Link */
 #mobile-menu a:last-child {
     border-bottom: none;
 }
 
+/* Slide-In Animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #mobile-menu {
+        width: 90%; /* Full-width menu for smaller screens */
+        right: 5%; /* Centered horizontally */
+    }
+
+    #mobile-menu a {
+        font-size: 16px; /* Slightly smaller font size */
+    }
+}
 /* Hero Section */
 .hero {
     text-align: center;

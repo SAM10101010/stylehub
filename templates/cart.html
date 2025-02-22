@@ -158,16 +158,20 @@
         }
 
         // Checkout
+       // Checkout - Redirect to Payment Page
+        // Checkout Function to redirect to payment page
         function checkout() {
-            if (cart.length === 0) {
+            const grandTotal = parseFloat(document.getElementById("grand-total").innerText);
+            if (grandTotal <= 0) {
                 alert("Your cart is empty. Add items before checkout.");
                 return;
             }
-            alert(`Thank you for your purchase! Your order total is $${document.getElementById("grand-total").innerText}`);
-            localStorage.removeItem('cart');
-            cart = [];
-            displayCart();
+
+            // Redirect to payment page (multiplication happens server-side)
+            window.location.href = `/payment?amount=${grandTotal}`;
         }
+
+
 
         // Initialize cart display
         document.addEventListener("DOMContentLoaded", () => {

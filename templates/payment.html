@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - StyleHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='paymentstyle.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Complete Your Payment</h1>
+        <p>Total Amount: <strong>₹{{ total_amount }}</strong></p>
+
+        <h2>📲 Pay via UPI</h2>
+        <p>Scan the QR code below or use the UPI ID: <strong>singlasanyam94-1@oksbi</strong></p>
+        <img src="{{ url_for('static', filename='qr_code.png') }}" alt="UPI QR Code" style="width: 300px;">
+
+        <h3>🔗 Or click the link below to pay directly:</h3>
+        <a href="upi://pay?pa=singlasanyam94-1@oksbi&pn=StyleHub&am={{ total_amount }}&cu=INR" 
+           style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
+           Pay ₹{{ total_amount }} Now
+        </a>
+
+        <br><br>
+        <button onclick="window.location.href='success.html'">✅ Payment Done? Confirm</button>
+        <br><br>
+        <button onclick="window.location.href='cart.html'">⬅️ Back to Home</button>
+    </div>
+</body>
+</html>

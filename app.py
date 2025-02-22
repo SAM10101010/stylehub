@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify , url_for
 import mysql.connector
+import qrcode
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -34,6 +36,31 @@ def blog():
 @app.route("/contact.html")
 def contact():
     return render_template("contact.html")
+
+# Payment Route
+@app.route("/payment")
+def payment():
+    total_amount = request.args.get("amount", default=0, type=float)
+    final_amount = total_amount * 85  # Multiply by 85
+    upi_id = "singlasanyam94-1@oksbi"
+
+    # Generate UPI payment link
+    upi_link = f"upi://pay?pa={upi_id}&pn=StyleHub&am={final_amount:.2f}&cu=INR"
+
+    # Generate QR code for the final amount
+    qr = qrcode.make(upi_link)
+    qr.save("static/qr_code.png")
+
+    return render_template("payment.html", total_amount=final_amount)
+
+
+@app.route("/thankyou.html")
+def thankyou():
+    return render_template("thankyou.html")
+
+@app.route("/success.html")
+def success():
+    return render_template("success.html")
 
 # Fetch all categories for dropdown (optional)
 @app.route("/categories")

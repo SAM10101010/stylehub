@@ -11,16 +11,52 @@
     <div class="container">
         <h1>📞 Contact Us</h1>
         <p>Have questions or feedback? We'd love to hear from you!</p>
-        <form action="https://api.web3forms.com/submit" method="POST">
+        <form id="contactForm">
             <input type="hidden" name="access_key" value="b47f4da1-cee0-47c9-9907-9c706eed0f5d">
+            
             <input type="text" name="name" placeholder="Your Name" required>
             <input type="email" name="email" placeholder="Your Email" required>
             <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+            
             <button type="submit">📨 Send Message</button>
         </form>
+        
+        <!-- Success message (hidden initially) -->
+        <div id="successMessage" style="display:none;">
+            ✅ Thank you for reaching out! Redirecting...
+        </div>
+        
         <footer>
             <p>&copy; 2025 StyleHub. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+        
+            const formData = new FormData(this);
+        
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("successMessage").style.display = "block";
+                    setTimeout(() => {
+                        window.location.href = "/thankyou.html"; // Redirect after success
+                    }, 2000); // Redirect after 2 seconds
+                } else {
+                    alert("❌ Failed to send message. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("❌ An error occurred. Please try again later.");
+            });
+        });
+        </script>
+        
 </body>
 </html>

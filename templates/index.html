@@ -134,7 +134,7 @@
                 const productDiv = document.createElement('div');
                 productDiv.classList.add('product-item');
                 productDiv.innerHTML = `
-                    <a href="${product.url}" target="_blank">
+                    <a href="categories.html?category_id=${product.category_id}">
                         <img src="${product.image}" alt="${product.name}">
                         <h3>${product.name}</h3>
                         <p>Price: $${product.price}</p>
@@ -197,7 +197,8 @@
                     const productDiv = document.createElement('div');
                     productDiv.classList.add('product-item');
                     productDiv.innerHTML = `
-                        <a href="${product.url}" target="_blank">
+                        
+                        <a href="categories.html?category_id=all">
                             <img src="/static/popularimg/${product.image}" alt="${product.name}">
                             <h3>${product.name}</h3>
                             <p>Price: $${product.price}</p>

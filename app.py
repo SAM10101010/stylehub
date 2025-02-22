@@ -21,6 +21,12 @@ def index():
 def categories():
     return render_template("categories.html")
 
+# Route to render the cart page
+@app.route("/cart")
+def cart():
+    return render_template("cart.html")
+
+
 # Fetch all categories for dropdown (optional)
 @app.route("/categories")
 def get_categories():
@@ -30,6 +36,21 @@ def get_categories():
         cursor.execute("SELECT * FROM categories")
         categories = cursor.fetchall()
         return jsonify(categories)
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    finally:
+        cursor.close()
+        connection.close()
+
+# Fetch most popular products
+@app.route("/most-popular")
+def get_most_popular():
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM most_popular")
+        popular_products = cursor.fetchall()
+        return jsonify(popular_products)
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
@@ -54,6 +75,26 @@ def get_products():
         products = cursor.fetchall()
         return jsonify(products)
 
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    finally:
+        cursor.close()
+        connection.close()
+
+# Fetch product details by ID (for cart display)
+@app.route("/product/<int:product_id>")
+def get_product_by_id(product_id):
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        query = "SELECT * FROM products WHERE id = %s"
+        cursor.execute(query, (product_id,))
+        product = cursor.fetchone()
+
+        if product:
+            return jsonify(product)
+        else:
+            return jsonify({"error": "Product not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:

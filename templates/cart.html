@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cartstyle.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🛒 Your Shopping Cart</h1>
+        <a href="categories.html">⬅️ Continue Shopping</a>
+    </header>
+
+    <main>
+        <section id="cart-items">
+            <h2>Cart Items</h2>
+            <div id="cart-list"></div>
+            <p id="empty-cart-message">Your cart is empty. Start adding products!</p>
+        </section>
+
+        <section id="cart-summary">
+            <h2>Order Summary</h2>
+            <div>
+                <p>Total Items: <span id="total-items">0</span></p>
+                <p>Subtotal: $<span id="subtotal">0.00</span></p>
+                <label for="coupon">Apply Coupon:</label>
+                <input type="text" id="coupon" placeholder="Enter coupon code">
+                <button onclick="applyCoupon()">Apply</button>
+                <p>Discount: -$<span id="discount">0.00</span></p>
+                <h3>Grand Total: $<span id="grand-total">0.00</span></h3>
+                <button onclick="checkout()">Proceed to Checkout</button>
+                <button onclick="clearCart()" style="background-color: red; color: white; margin-top: 10px;">Clear Cart</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 StyleHub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let couponApplied = false;
+
+        // Display cart items
+        function displayCart() {
+            const cartList = document.getElementById("cart-list");
+            const emptyMessage = document.getElementById("empty-cart-message");
+            const totalItems = document.getElementById("total-items");
+            const subtotal = document.getElementById("subtotal");
+            const discount = document.getElementById("discount");
+            const grandTotal = document.getElementById("grand-total");
+
+            cartList.innerHTML = "";
+
+            if (cart.length === 0) {
+                emptyMessage.style.display = "block";
+                totalItems.innerText = 0;
+                subtotal.innerText = "0.00";
+                discount.innerText = "0.00";
+                grandTotal.innerText = "0.00";
+                return;
+            }
+
+            emptyMessage.style.display = "none";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement("div");
+                cartItem.classList.add("cart-item");
+                const itemTotal = item.price * item.quantity;
+
+                cartItem.innerHTML = `
+                    <img src="${item.photo || 'placeholder.jpg'}" alt="${item.name}" class="product-image" style="width: 100px; height: 100px;">
+                    <div>
+                        <h3>${item.name}</h3>
+                        <p>${item.description || 'No description available.'}</p>
+                        <p>Price: $${item.price.toFixed(2)} each</p>
+                        <p>
+                            Quantity: 
+                            <button onclick="changeQuantity(${index}, -1)">➖</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="changeQuantity(${index}, 1)">➕</button>
+                        </p>
+                        <p>Total: $${itemTotal.toFixed(2)}</p>
+                        <button onclick="removeFromCart(${index})">❌ Remove</button>
+                    </div>
+                `;
+
+                cartList.appendChild(cartItem);
+                total += itemTotal;
+            });
+
+            totalItems.innerText = cart.length;
+            subtotal.innerText = total.toFixed(2);
+            discount.innerText = "0.00";
+            grandTotal.innerText = total.toFixed(2);
+        }
+
+        // Change quantity
+        function changeQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        // Remove item from cart
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        // Clear entire cart
+        function clearCart() {
+            if (confirm("Are you sure you want to clear the cart?")) {
+                cart = [];
+                localStorage.removeItem('cart');
+                displayCart();
+            }
+        }
+
+        // Apply coupon
+        function applyCoupon() {
+            const coupon = document.getElementById("coupon").value.trim().toUpperCase();
+            const discountElement = document.getElementById("discount");
+            const grandTotal = document.getElementById("grand-total");
+
+            if (couponApplied) {
+                alert("Coupon already applied!");
+                return;
+            }
+
+            let discount = 0;
+            if (coupon === "STYLE10") {
+                discount = 0.1 * parseFloat(document.getElementById("subtotal").innerText);
+                alert("Coupon applied! You got 10% off.");
+                couponApplied = true;
+            } else if (coupon === "FREESHIP") {
+                alert("Free shipping applied!");
+                couponApplied = true;
+            } else {
+                alert("Invalid coupon code.");
+                return;
+            }
+
+            discountElement.innerText = discount.toFixed(2);
+            const newTotal = parseFloat(document.getElementById("subtotal").innerText) - discount;
+            grandTotal.innerText = newTotal.toFixed(2);
+        }
+
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty. Add items before checkout.");
+                return;
+            }
+
+            alert(`Thank you for your purchase! Your order total is $${document.getElementById("grand-total").innerText}`);
+            localStorage.removeItem('cart');
+            cart = [];
+            displayCart();
+        }
+
+        // Initialize cart display
+        document.addEventListener("DOMContentLoaded", displayCart);
+    </script>
+</body>
+</html>

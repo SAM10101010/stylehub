@@ -7,14 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="logo">StyleHub</div>
         <a href="/" class="back-home">🏠 Back to Home</a>
         <button id="cart-btn" onclick="viewCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
     </header>
 
-    <!-- Categories Section -->
     <section class="categories-section">
         <h2>Select a Category</h2>
         <div class="category-buttons">
@@ -26,23 +24,21 @@
         </div>
     </section>
 
-    <!-- Product List Section -->
     <h1 id="category-title">Category Products</h1>
     <section id="product-list" class="grid"></section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2025 StyleHub. All rights reserved.</p>
     </footer>
     <script>
         let cart = [];
-    
+
         // Function to get query parameters
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
-    
+
         // Mapping of category IDs to category names
         const categories = {
             1: "Jeans",
@@ -51,83 +47,15 @@
             4: "Outerwear",
             5: "Accessories"
         };
-    
+
         // Fetch and display products based on category ID
         async function fetchProducts(categoryId) {
-            // Update the category title
-            const categoryTitle = document.getElementById("category-title");
-            if (categoryId && categories[categoryId]) {
-                categoryTitle.innerText = `${categories[categoryId]} Products`;
-            } else {
-                categoryTitle.innerText = "Please select a category";
-                return;
-            }
-    
-            try {
-                const response = await fetch(`/products?category_id=${categoryId}`);
-                const products = await response.json();
-                const productList = document.getElementById("product-list");
-                productList.innerHTML = "";
-    
-                if (products.length === 0) {
-                    productList.innerHTML = "<p>No products available for this category.</p>";
-                    return;
-                }
-    
-                // Display products with Buy Now and Add to Cart buttons
-                products.forEach(product => {
-                    const productCard = document.createElement("div");
-                    productCard.classList.add("product-card");
-                    productCard.innerHTML = `
-                        <img src="${product.photo}" alt="${product.name}">
-                        <h3>${product.name}</h3>
-                        <p>Price: $${product.price}</p>
-                        <button onclick="buyProduct(${product.id})">🛒 Buy Now</button>
-                        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
-                    `;
-                    productList.appendChild(productCard);
-                });
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            }
-        }
-    
-        // Function to simulate buying a product
-        function buyProduct(productId) {
-            alert(`Product with ID ${productId} has been bought!`);
-        }
-    
-        // Function to add product to cart
-        function addToCart(productId, productName, productPrice) {
-            cart.push({ id: productId, name: productName, price: productPrice });
-            updateCartCount();
-            alert(`${productName} added to cart!`);
-        }
-    
-        // Function to update cart count
-        function updateCartCount() {
-            document.getElementById("cart-count").innerText = cart.length;
-        }
-    
-        // Function to view cart items
-        function viewCart() {
-            if (cart.length === 0) {
-                alert("Your cart is empty.");
-                return;
-            }
-    
-            let cartDetails = "🛒 Your Cart:\n";
-            cart.forEach(item => {
-                cartDetails += `🔸 ${item.name} - $${item.price}\n`;
-            });
-            alert(cartDetails);
-        }
-
-                // Fetch and display products based on category ID
-        async function fetchProducts(categoryId) {
             const categoryTitle = document.getElementById("category-title");
 
-            // Show all products if category_id is "all"
+            if (categoryId !== "all") {
+                categoryId = parseInt(categoryId);
+            }
+
             if (categoryId === "all") {
                 categoryTitle.innerText = "All Products";
             } else if (categories[categoryId]) {
@@ -149,15 +77,15 @@
                     return;
                 }
 
-                // Display products
                 products.forEach(product => {
                     const productCard = document.createElement("div");
                     productCard.classList.add("product-card");
                     productCard.innerHTML = `
-                        <img src="${product.photo}" alt="${product.name}">
+                        <img src="${product.image_url || product.photo}" alt="${product.name}">
                         <h3>${product.name}</h3>
                         <p>Price: $${product.price}</p>
-                        <button onclick="buyProduct(${product.id})">Buy Now</button>
+                        <button onclick="buyProduct(${parseInt(product.id)})">🛒 Buy Now</button>
+                        <button onclick="addToCart(${parseInt(product.id)}, '${product.name}', ${product.price})">🛍️ Add to Cart</button>
                     `;
                     productList.appendChild(productCard);
                 });
@@ -166,29 +94,50 @@
             }
         }
 
-        // Load products on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            const categoryId = getQueryParam("category_id");
-            fetchProducts(categoryId || "all"); // Load all products by default
-        });
+        // Function to simulate buying a product
+        function buyProduct(productId) {
+            alert(`Product with ID ${productId} has been bought!`);
+        }
 
+        // Function to add product to cart
+        function addToCart(productId, productName, productPrice) {
+            cart.push({ id: productId, name: productName, price: productPrice });
+            updateCartCount();
+            alert(`${productName} added to cart!`);
+        }
 
-    
+        // Function to update cart count
+        function updateCartCount() {
+            const cartCount = document.getElementById("cart-count");
+            if (cartCount) {
+                cartCount.innerText = cart.length;
+            }
+        }
+
+        // Function to view cart items
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("Your cart is empty.");
+                return;
+            }
+
+            let cartDetails = "🛒 Your Cart:\n";
+            cart.forEach(item => {
+                cartDetails += `🔸 ${item.name} - $${item.price}\n`;
+            });
+            alert(cartDetails);
+        }
+
         // Filter products by category
         function filterProducts(categoryId) {
             fetchProducts(categoryId);
         }
-    
+
         // Load products based on query parameter on page load
         document.addEventListener("DOMContentLoaded", () => {
-            const categoryId = getQueryParam("category_id");
-            if (categoryId) {
-                fetchProducts(categoryId);
-            } else {
-                document.getElementById("category-title").innerText = "Please select a category";
-            }
+            const categoryId = getQueryParam("category_id") || "all";
+            fetchProducts(categoryId);
         });
     </script>
-    
 </body>
 </html>

@@ -6,6 +6,16 @@ body {
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.6;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Header Styles */
@@ -19,6 +29,16 @@ header {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 1000;
+    animation: slideDown 1s ease-in-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 /* Cart Button Styling */
@@ -34,13 +54,14 @@ header {
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 #cart-btn:hover {
     background: linear-gradient(135deg, #e56700, #ff9b33);
-    transform: scale(1.05);
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 #cart-count {
@@ -60,22 +81,6 @@ header {
     100% { transform: scale(1); }
 }
 
-/* Ensure Cart Button aligns with Header */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-header .logo {
-    flex: 1;
-}
-
-header .back-home, #cart-btn {
-    margin-left: 10px;
-}
-
 /* Logo on the Left */
 .logo {
     font-size: 32px;
@@ -84,10 +89,13 @@ header .back-home, #cart-btn {
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) rotate(2deg);
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Back to Home Link on the Right */
@@ -98,11 +106,14 @@ header .back-home, #cart-btn {
     padding: 10px 15px;
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.2);
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .back-home:hover {
     background-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Categories Section */
@@ -113,14 +124,27 @@ header .back-home, #cart-btn {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
     max-width: 1200px;
+    animation: fadeInUp 1s ease-in-out;
 }
+
 .categories-section h2 {
     font-size: 28px;
     margin-bottom: 20px;
     color: #7d3cff;
     position: relative;
     display: inline-block;
+    animation: slideInLeft 1s ease-in-out;
 }
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
 .categories-section h2::after {
     content: '';
     position: absolute;
@@ -130,13 +154,25 @@ header .back-home, #cart-btn {
     height: 3px;
     background: linear-gradient(135deg, #7d3cff, #d29fff);
     border-radius: 5px;
+    animation: grow 1s ease-in-out;
 }
+
+@keyframes grow {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
 .category-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
     flex-wrap: wrap;
 }
+
 .category-buttons button {
     padding: 12px 20px;
     background: linear-gradient(135deg, #7d3cff, #d29fff);
@@ -146,12 +182,14 @@ header .back-home, #cart-btn {
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .category-buttons button:hover {
     background: linear-gradient(135deg, #5a29b4, #9c65ff);
-    transform: scale(1.05);
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Category Title Styling */
@@ -164,6 +202,7 @@ header .back-home, #cart-btn {
     position: relative;
     animation: fadeInDown 1s ease-in-out;
 }
+
 #category-title::after {
     content: '';
     position: absolute;
@@ -174,89 +213,109 @@ header .back-home, #cart-btn {
     height: 3px;
     background: linear-gradient(135deg, #7d3cff, #d29fff);
     border-radius: 5px;
+    animation: grow 1s ease-in-out;
 }
 
 /* Product Grid Layout */
-
 .grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-gap: 35px;
-padding: 50px 20px;
-max-width: 1200px;
-margin: auto;
-animation: fadeInUp 1s ease-in-out;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 35px;
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: auto;
+    animation: fadeInUp 1s ease-in-out;
 }
 
 .product-card {
-background-color: white;
-padding: 25px;
-border-radius: 15px;
-box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-text-align: center;
-transition: transform 0.3s ease, box-shadow 0.3s ease;
-position: relative;
-overflow: hidden;
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
+
 .product-card::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: linear-gradient(135deg, rgba(125, 60, 255, 0.1), rgba(210, 159, 255, 0.1));
-opacity: 0;
-transition: opacity 0.3s ease;
-z-index: -1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(125, 60, 255, 0.1), rgba(210, 159, 255, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
 }
+
 .product-card:hover {
-transform: translateY(-12px);
-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-12px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
+
 .product-card:hover::before {
-opacity: 1;
+    opacity: 1;
 }
+
 .product-card img {
-width: 100%;
-height: 220px;
-object-fit: cover;
-border-radius: 12px;
-margin-bottom: 18px;
-transition: transform 0.3s ease;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
 }
+
 .product-card img:hover {
-transform: scale(1.1);
+    transform: scale(1.1);
 }
+
 .product-card h3 {
-font-size: 22px;
-color: #7d3cff;
-margin: 10px 0 8px;
-font-weight: 700;
-letter-spacing: 0.5px;
+    font-size: 22px;
+    color: #7d3cff;
+    margin: 10px 0 8px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
 }
+
+.product-card h3:hover {
+    color: #5a29b4;
+}
+
 .product-card p {
-font-size: 16px;
-color: #555;
-margin: 0;
-line-height: 1.5;
+    font-size: 16px;
+    color: #555;
+    margin: 0;
+    line-height: 1.5;
+    transition: color 0.3s ease;
 }
+
+.product-card p:hover {
+    color: #7d3cff;
+}
+
 .product-card button {
-margin-top: 20px;
-padding: 14px 24px;
-background: linear-gradient(135deg, #7d3cff, #d29fff);
-color: white;
-border: none;
-border-radius: 10px;
-cursor: pointer;
-font-size: 16px;
-font-weight: 600;
-transition: background 0.3s ease, transform 0.3s ease;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #7d3cff, #d29fff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .product-card button:hover {
-background: linear-gradient(135deg, #5a29b4, #9c65ff);
-transform: scale(1.05);
+    background: linear-gradient(135deg, #5a29b4, #9c65ff);
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Footer Styling */
@@ -268,7 +327,9 @@ footer {
     margin-top: 40px;
     position: relative;
     overflow: hidden;
+    animation: fadeIn 1s ease-in-out;
 }
+
 footer::before {
     content: '';
     position: absolute;
@@ -281,19 +342,27 @@ footer::before {
     opacity: 0.5;
     pointer-events: none;
 }
+
 footer p {
     font-size: 18px;
     font-weight: 600;
     margin: 0;
     position: relative;
     z-index: 1;
+    transition: color 0.3s ease;
 }
+
+footer p:hover {
+    color: #ffcc00;
+}
+
 footer a {
     color: white;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
 }
+
 footer a:hover {
     color: #ffcc00;
 }
@@ -339,6 +408,7 @@ footer a:hover {
         transform: translateY(0);
     }
 }
+
 @keyframes fadeInUp {
     from {
         opacity: 0;

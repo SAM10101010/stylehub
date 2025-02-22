@@ -11,14 +11,12 @@
         <h1>🛒 Your Shopping Cart</h1>
         <a href="categories.html">⬅️ Continue Shopping</a>
     </header>
-
     <main>
         <section id="cart-items">
             <h2>Cart Items</h2>
             <div id="cart-list"></div>
             <p id="empty-cart-message">Your cart is empty. Start adding products!</p>
         </section>
-
         <section id="cart-summary">
             <h2>Order Summary</h2>
             <div>
@@ -34,11 +32,9 @@
             </div>
         </section>
     </main>
-
     <footer>
         <p>&copy; 2025 StyleHub. All rights reserved.</p>
     </footer>
-
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let couponApplied = false;
@@ -53,7 +49,6 @@
             const grandTotal = document.getElementById("grand-total");
 
             cartList.innerHTML = "";
-
             if (cart.length === 0) {
                 emptyMessage.style.display = "block";
                 totalItems.innerText = 0;
@@ -69,7 +64,9 @@
             cart.forEach((item, index) => {
                 const cartItem = document.createElement("div");
                 cartItem.classList.add("cart-item");
+
                 const itemTotal = item.price * item.quantity;
+                total += itemTotal;
 
                 cartItem.innerHTML = `
                     <img src="${item.photo || 'placeholder.jpg'}" alt="${item.name}" class="product-image" style="width: 100px; height: 100px;">
@@ -83,16 +80,14 @@
                             <span>${item.quantity}</span>
                             <button onclick="changeQuantity(${index}, 1)">➕</button>
                         </p>
-                        <p>Total: $${itemTotal.toFixed(2)}</p>
+                        <p>Total: $<span class="item-total">${itemTotal.toFixed(2)}</span></p>
                         <button onclick="removeFromCart(${index})">❌ Remove</button>
                     </div>
                 `;
-
                 cartList.appendChild(cartItem);
-                total += itemTotal;
             });
 
-            totalItems.innerText = cart.length;
+            totalItems.innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
             subtotal.innerText = total.toFixed(2);
             discount.innerText = "0.00";
             grandTotal.innerText = total.toFixed(2);
@@ -100,11 +95,17 @@
 
         // Change quantity
         function changeQuantity(index, delta) {
-            cart[index].quantity += delta;
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
+            const item = cart[index];
+            item.quantity += delta;
+
+            if (item.quantity <= 0) {
+                cart.splice(index, 1); // Remove item if quantity drops to zero
             }
+
+            // Save updated cart to localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Recalculate and update the cart display
             displayCart();
         }
 
@@ -159,7 +160,6 @@
                 alert("Your cart is empty. Add items before checkout.");
                 return;
             }
-
             alert(`Thank you for your purchase! Your order total is $${document.getElementById("grand-total").innerText}`);
             localStorage.removeItem('cart');
             cart = [];

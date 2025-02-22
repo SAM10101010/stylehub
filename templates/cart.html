@@ -36,7 +36,7 @@
         <p>&copy; 2025 StyleHub. All rights reserved.</p>
     </footer>
     <script>
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let couponApplied = false;
 
         // Display cart items
@@ -62,10 +62,11 @@
             let total = 0;
 
             cart.forEach((item, index) => {
+                const quantity = item.quantity ?? 1;  // Default to 1 if undefined
                 const cartItem = document.createElement("div");
                 cartItem.classList.add("cart-item");
 
-                const itemTotal = item.price * item.quantity;
+                const itemTotal = item.price * quantity;
                 total += itemTotal;
 
                 cartItem.innerHTML = `
@@ -77,7 +78,7 @@
                         <p>
                             Quantity: 
                             <button onclick="changeQuantity(${index}, -1)">➖</button>
-                            <span>${item.quantity}</span>
+                            <span>${quantity}</span>
                             <button onclick="changeQuantity(${index}, 1)">➕</button>
                         </p>
                         <p>Total: $<span class="item-total">${itemTotal.toFixed(2)}</span></p>
@@ -87,7 +88,7 @@
                 cartList.appendChild(cartItem);
             });
 
-            totalItems.innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
+            totalItems.innerText = cart.reduce((sum, item) => sum + (item.quantity ?? 1), 0);
             subtotal.innerText = total.toFixed(2);
             discount.innerText = "0.00";
             grandTotal.innerText = total.toFixed(2);
@@ -96,7 +97,7 @@
         // Change quantity
         function changeQuantity(index, delta) {
             const item = cart[index];
-            item.quantity += delta;
+            item.quantity = (item.quantity ?? 0) + delta;  // Ensure quantity exists
 
             if (item.quantity <= 0) {
                 cart.splice(index, 1); // Remove item if quantity drops to zero
@@ -167,7 +168,12 @@
         }
 
         // Initialize cart display
-        document.addEventListener("DOMContentLoaded", displayCart);
+        document.addEventListener("DOMContentLoaded", () => {
+            cart = cart.map(item => ({ ...item, quantity: item.quantity ?? 1 }));
+            displayCart();
+        });
+
+
     </script>
 </body>
 </html>

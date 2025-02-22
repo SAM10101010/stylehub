@@ -26,6 +26,10 @@ def categories():
 def cart():
     return render_template("cart.html")
 
+@app.route("/blog.html")
+def blog():
+    return render_template("blog.html")
+
 # Fetch all categories for dropdown (optional)
 @app.route("/categories")
 def get_categories():

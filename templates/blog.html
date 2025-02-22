@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & About</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7d3cff, #d29fff);
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 18px;
+            margin: 5px 0 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #7d3cff;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #7d3cff, #d29fff);
+            border-radius: 5px;
+        }
+
+        /* Blog Section */
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .post {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .post img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .post img:hover {
+            transform: scale(1.1);
+        }
+
+        .post h3 {
+            font-size: 24px;
+            margin: 0 0 10px;
+            color: #7d3cff;
+            transition: color 0.3s ease;
+        }
+
+        .post h3:hover {
+            color: #5a29b4;
+        }
+
+        .post p {
+            font-size: 16px;
+            color: #555;
+            margin: 0;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #7d3cff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .read-more:hover {
+            background-color: #5a29b4;
+            transform: scale(1.05);
+        }
+
+        /* About Section */
+        .about-content {
+            text-align: center;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .about-content img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-content img:hover {
+            transform: rotate(360deg);
+        }
+
+        .about-content h3 {
+            font-size: 28px;
+            margin: 0 0 10px;
+            color: #7d3cff;
+        }
+
+        .about-content p {
+            font-size: 18px;
+            color: #555;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            .blog-posts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Welcome to StyleHub</h1>
+        <p>Your Ultimate Fashion Destination</p>
+        <nav>
+            <a href="#blog">Blog</a>
+            <a href="#about">About Us</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Blog Section -->
+        <section id="blog">
+            <h2>Latest Blog Posts</h2>
+            <div class="blog-posts">
+                <!-- Post 1 -->
+                <div class="post">
+                    <img src="https://via.placeholder.com/400x200" alt="Fashion Trends">
+                    <h3>Fashion Trends in 2024</h3>
+                    <p>Discover the latest fashion trends and how to incorporate them into your wardrobe. From bold colors to sustainable fabrics, we’ve got you covered!</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+                <!-- Post 2 -->
+                <div class="post">
+                    <img src="https://via.placeholder.com/400x200" alt="Sustainable Fashion">
+                    <h3>Sustainable Fashion Choices</h3>
+                    <p>Learn about eco-friendly fashion and how you can make a positive impact on the environment. Explore brands that prioritize sustainability.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+                <!-- Post 3 -->
+                <div class="post">
+                    <img src="https://via.placeholder.com/400x200" alt="Seasonal Styles">
+                    <h3>Seasonal Style Guide</h3>
+                    <p>Get tips on dressing for every season while staying stylish and comfortable. From summer dresses to winter coats, find your perfect look.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+                <!-- Post 4 -->
+                <div class="post">
+                    <img src="https://via.placeholder.com/400x200" alt="Accessories Spotlight">
+                    <h3>The Power of Accessories</h3>
+                    <p>Accessories can elevate any outfit. Learn how to style scarves, hats, jewelry, and more to complete your look.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <h2>About Us</h2>
+            <div class="about-content">
+                <img src="https://via.placeholder.com/200" alt="Team Photo">
+                <h3>Our Story</h3>
+                <p>StyleHub was founded with a passion for fashion and a commitment to helping people look and feel their best. We believe in quality, creativity, and sustainability. Our mission is to provide you with the latest trends, expert advice, and timeless pieces that suit your unique style.</p>
+                <p>Whether you're looking for everyday essentials or statement pieces, we’re here to inspire and guide you on your fashion journey. Join us as we redefine style one outfit at a time!</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 StyleHub. All rights reserved.</p>
+    </footer>
+</body>
+</html>

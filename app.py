@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify , url_for
+from flask import Flask, render_template, request, jsonify
 import mysql.connector
 import qrcode
 from PIL import Image
@@ -53,7 +53,6 @@ def payment():
 
     return render_template("payment.html", total_amount=final_amount)
 
-
 @app.route("/thankyou.html")
 def thankyou():
     return render_template("thankyou.html")
@@ -62,9 +61,11 @@ def thankyou():
 def success():
     return render_template("success.html")
 
-# Fetch all categories for dropdown (optional)
+# Fetch all categories for dropdown
 @app.route("/categories")
 def get_categories():
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
@@ -74,12 +75,16 @@ def get_categories():
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
-        cursor.close()
-        connection.close()
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 # Fetch products based on category ID or search query
 @app.route("/products")
 def get_products():
+    connection = None
+    cursor = None
     category_id = request.args.get("category_id", type=int)
     search_query = request.args.get("search", type=str)
 
@@ -102,12 +107,16 @@ def get_products():
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
-        cursor.close()
-        connection.close()
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 # Fetch most popular products
 @app.route("/most-popular")
 def get_most_popular():
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
@@ -117,12 +126,16 @@ def get_most_popular():
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
-        cursor.close()
-        connection.close()
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
-# Fetch product details by ID (for cart display)
+# Fetch product details by ID
 @app.route("/product/<int:product_id>")
 def get_product_by_id(product_id):
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
@@ -137,8 +150,10 @@ def get_product_by_id(product_id):
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
-        cursor.close()
-        connection.close()
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
